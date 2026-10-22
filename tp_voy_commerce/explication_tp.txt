@@ -1,0 +1,5 @@
+Exercice 1:
+a) Pour faire une permutation, une méthode spontanée serait de tirer aléatoirement une valeur entre 0 et n-1 et échanger la valeur courante avec la valeur
+    à l'indice tiré au hasard.
+    On répète ce procédé n fois.
+    On utilise random.randint pour tirer l'indice aléatoirement.
