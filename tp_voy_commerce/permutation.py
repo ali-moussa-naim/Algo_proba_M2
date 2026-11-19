@@ -1,7 +1,7 @@
 import random
 import math
 from itertools import permutations
-import matplotlib as plt
+import matplotlib.pyplot as plt
 
 """
 Fonction qui génère une permutation pour une liste de taille n
@@ -24,18 +24,20 @@ n : entier, nombre d'éléments dans la liste
 def gen_all_permutation(n):
     l_res = []
     limite = math.factorial(n)
+    cpt = 0
 
     for i in range(limite):
         # Permutation aléatoire
         l_perm = gen_permutation(n)
 
-        # On vérifie si la permutation est déjà dans la liste ou non
+        # On prend une permutation tant qu'elle est déjà dans la liste
         while(l_perm in l_res):
             l_perm = gen_permutation(n)
-        
+
         l_res.append(l_perm)
-    
-    return l_res
+        cpt += 1
+
+    return l_res, cpt
 
 """
 Fonction qui génère toutes les permutations avec itertools
@@ -44,48 +46,96 @@ n : entier, nombre d'éléments dans la liste
 def gen_all_permutation_itertools(n):
     l_res = []
     liste_perm = list(range(n))
-    
+    liste_perm = permutations(liste_perm)
+    cpt = 0
 
     for p in liste_perm:
-        print(p)
+        cpt += 1
 
-    return permutations(liste_perm)
+    return liste_perm, cpt
+
 
 """
-Fonction qui compare les résultats entre les 2 méthodes de générations de permutation
-n : entier, nombre d'éléments dans une liste
+Fonction qui réalise N mélanges et compte les fréquences
+n : entier, nombre d'éléments pour la permutation
+N : entier, valeur de la fréquence
 """
-def comp_l_perm(n):
-    l_perm = gen_all_permutation(n)
-    l_perm_itertools = gen_all_permutation_itertools(n)
+def calcul_frequences(n, N):
+    toutes_perm = list(permutations(range(n)))
+    effectifs = [0] * len(toutes_perm)
 
-    # On vérifie si on a les mêmes tailles
-    if(len(l_perm) != len(l_perm_itertools)):
-        print("Les 2 listes n'ont pas le même nombre de permutation")
-        return False
+    for i in range(N):
+        p = tuple(gen_permutation(n))
+        rang = toutes_perm.index(p)
+        effectifs[rang] += 1
 
-    comp = False
-    for i in range(len(l_perm)):
-        for j in range(len(l_perm)):
-            pass
-    
-    return None
+    frequences = [e / N for e in effectifs]
+
+    return frequences
 
 """
 Fonction qui trace le graphe
 n : entier, nombre d'éléments dans la liste
 """
-def display_fig_perm(n):
-    pass
+
+def display_fig_perm(n, frequences, N):
+    limite = math.factorial(n)
+
+    plt.figure(figsize=(16, 5))
+
+    # Tracé des fréquences
+    plt.bar(range(limite), frequences, width=0.8)
+
+    # Fréquence théorique si le mélange est uniforme
+    plt.axhline(y=1/limite, color='red', linestyle='--',
+                label="Fréquence théorique (1/120)")
+
+    plt.xlim(0, limite)
+    plt.ylim(0, max(max(frequences) * 1.1, 1/limite * 1.2))
+
+    plt.xlabel("Rang de la permutation")
+    plt.ylabel("Fréquence")
+    plt.title(f"Fréquences des permutations pour N = {N}")
+
+    plt.legend()
+    plt.grid(axis='y')
+    plt.show()
+
+"""
+Fonction qui génère toutes les permutations sans biais
+n : entier, nombre d'éléments dans la liste
+"""
+def gen_permutation_uniforme(n):
+    liste_perm = list(range(n))
+    for i in range(n - 1):
+        indice_alea = random.randint(i, n - 1)  
+        liste_perm[i], liste_perm[indice_alea] = liste_perm[indice_alea], liste_perm[i]
+    return liste_perm
 
 
+n = 7
+l_all_perm1, cpt1 = gen_all_permutation(n)
+l_all_perm, cpt = gen_all_permutation_itertools(n)
 
-n = 8
-l_all_perm = gen_all_permutation(n)
-
-print(l_all_perm)
-print("Nombre de permutation =", len(l_all_perm))
+"""
+print("cpt =", cpt1)
+print(l_all_perm1)
 
 print("\n")
-#l_all_perm_itertools = gen_all_permutation_itertools(n)
-#print("Permutations naïve = Permutations itertools:", sorted(l_all_perm) == sorted(l_all_perm_itertools))
+
+print("cpt =", cpt)
+print(l_all_perm)
+"""
+
+"""
+
+for graines in [10, 42, 123, 2026]:
+    random.seed(graines)
+    for N in [1200, 12000, 120000]:
+        frequences = calcul_frequences(5, N)
+        display_fig_perm(5, frequences, N)
+"""
+
+n = 3
+l_perm = gen_permutation_uniforme(3)
+print(l_perm)

@@ -1,0 +1,37 @@
+Exercice 1:
+a) Pour faire une permutation, une méthode spontanée serait de tirer aléatoirement une valeur entre 0 et n-1 et échanger la valeur courante avec la valeur
+    à l'indice tiré au hasard.
+    On répète ce procédé n fois, la taille du tableau.
+    On utilise random.randint pour tirer l'indice aléatoirement.
+
+c) Pour générer toutes les sorties possibles avec ma méthode, je vais devoir implémanter une fonction en O(n!²) car à chaque fois que je génère une permutation
+    je dois vérifier si cette permutation est déjà présente dans la liste qui contient toutes les permutations.
+    Donc cette méthode n'est valable que pour une petite valeur de n, 7 est la limite pour cette méthode pour avoir un résultat rapidement.
+    Si c'est le cas je dois générer une autre permutation jusqu'à ce que je tombe sur une permutation non présente dans la liste finale.
+    La différence est qu'avec ma méthode est que je génère toutes les permutations pour n soit n! permutations, mais ma méthode est beaucoup plus lente en temps
+    par rapport à la fonction qui utilise itertools.combinations. 
+    De plus ma liste n'est pas trié à la comparaison de la méthode itertools.
+
+d) J'ai utilisé l'IA pour me générer la fonction calcul_frequences et améliorer ma fonction display_fig_perm.
+    Avant l'IA ma fonction d'affichage n'affichait aucune barre.
+
+e) Non, un mélange uniforme ne doit pas donner des barres exactement égales. On travaille avec l'aléatoire, donc si on veut qu'un mélange aléatoire donne   
+    des barres exactement égales alors ceci signifie que l'on ne travaille pas avec l'aléatoire.
+    Plus N augmente et plus l'écart relatif à la fréquence semble diminuer.
+    Certaines permutations persistent dans le temps, celle en position 10 et celles entre 27 et 33.
+    J'ai fait plusieurs autres tests en modifiant la valeur du seed, mais les observations sont les mêmes que précédement. Avec les mêmes permutations 
+    qui persistent et l'écart relatif à peu près équivalent.
+    Donc non, un histogramme visuellement régulier ne prouve pas l'absence de biais. La preuve avec l'expérience quand on a changé la graine.
+    Les résultats restaient les mêmes, même si les barres semblaient régulières. Et le fait que malgré l'utilisation de plusieurs graines les résultats 
+    sont identitques, cela signifie justement qu'un biais est présent.
+    
+    On peut donc supposer que notre fonction de génération de permutations ne produit pas une distribution uniforme. 
+    Cependant, le problème ne vient pas nécessairement de la fonction random.randint(), mais plutôt de la manière dont nous utilisons les indices aléatoires 
+    pour effectuer les échanges dans notre liste.
+    Ainsi, notre méthode permet bien de générer des permutations valides, mais ne garantit pas que chacune des permutations ait la même probabilité d'être obtenue.
+
+f) Je pense que le biais venait de la façon dont je tirais l'indice aléatoire, je le tirais entre 0 et (n - 1). Donc je vais modifier la fonction.
+    Pour implémanter cette fonction, on va juste améliorer la fonction naïve initiale. Au lieu de tirer un indice aléatoirement de 0 à (n - 1), on va tirer un 
+    indice aléatoire entre i et (n - 1). Ainsi on ne prendra pas d'éléments déjà triés.
+    Donc pour n = 3 les sorties possibles sont: [0, 1, 2], [0, 2, 1], [1, 2, 0], [1, 0, 2], [2, 1, 0], [2, 0, 1] soit 6 possibilités donc cela correspond bien
+    à 3! = 6
