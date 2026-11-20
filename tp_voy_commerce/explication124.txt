@@ -1,3 +1,6 @@
+Naïm ALI-MOUSSA M2 Math/Info
+Explication TP1 Exercice 1;2;4
+
 Exercice 1:
 a) Pour faire une permutation, une méthode spontanée serait de tirer aléatoirement une valeur entre 0 et n-1 et échanger la valeur courante avec la valeur
     à l'indice tiré au hasard.
@@ -55,3 +58,72 @@ d) A la fin, en faisant plusieurs fois resultats.append(L) on prévoit d'observe
     quand on utilise la fonction append on ajoute une référence vers l'objet mémoire. Donc quand on ajoute L, comme on modifie plusieurs 
     fois L cettte liste sera écrasée au fur et à mesure à chaque étape et ne gardera que sa valeur finale.
     Il faut utiliser la fonction .copy() pour régler le problème.
+
+e) Pour rechercher le plus grand élément actif c'est linéaire on utilise une boucle for(n), La complexité est O(n).
+    Pour le changement de direction c'est pareil, on utilise une boucle for et une condition dans cette boucle qui a une complexité
+    constante, donc la complexité est aussi en O(n).
+    Puis la copie d'une sortie est faite avec la fonction python .copy(), cette fonction est aussi en temps linéaire car elle doit
+    parcourir tous les éléments de la liste L, la complexité est O(n).
+
+Exercice 4:
+
+a) Pour un circuit on a un point de départ et un point d'arrivée donc le nombre de possibilités est fini.
+    On a n points donc pour le point de départ il a n possibilités, ensuite pour le deuxième point il a n - 1 possibilités vu qu'il ne 
+    peut pas aller vers le point de départ, pour le deuxième point il a (n - 2) possibilités car il y a le point d'avant et le point
+    de départ et ainsi de suite, ce qui nous donne le produit suivant: n * (n - 1) * (n - 2) * ... * 1 = n!
+    Le choix du point de départ n'a aucun impact sur la longueur du parcours, de plus que ce parcours est fini. Effectuer un décalage 
+    circulaire des éléments de la permutation revient simplement à changer le point de départ sans changer les arêtes parcourues : 
+    la longueur reste donc invariante. Comme il y a $n$ points de départ possibles pour un même cycle, chaque circuit est représenté 
+    par n permutations distinctes. En divisant par n, on obtient n! / n = (n - 1)!
+    Lorsque la matrice des distances est symétrique parcourir un circuit dans un sens ou dans le sens opposé (inversion de l'ordre des 
+    visites) donne exactement la même distance totale. Donc on divise par 2 ce qui donne finalement 1/2 * (n - 1)!
+
+b) Parmi les n rotations possibles d'un cycle, une seule commence par 0, on impose que la permutation commence toujours par 0.
+    Ceci élimine l'invariance par rotation.
+    Puis la deuxième condition serait que l'on détermine un circuit et son inverse comme suit: circuit = [0, p1,..., pn-1] 
+    inverse = [0, pn-1,...,p1], on impose que la deuxième ville visitée soit inférieure à la dernière.
+    Si les distances sont asymétriques l'invariance par rotation est conservée mais pas l'invariance par inversion, elle disparaît.
+
+c) Non, on ne peut pas éviter les parcours inverses. Si l'on s'arrête à la moitié des permutations générées, on va rater certains 
+    circuits et tester deux fois d'autres circuits.
+    Dans la construction récursive on prend une à une les permutations en faisant balayer le nouvel élément de droite à gauche, puis 
+    inversement. Mais si on s'arrête à la moitié cela ne signifie par que l'inverse du circuit correspond à la moitié restante.
+    Il faut retouner l'ordre complet de tous les éléments.
+
+d) Pour n >= 3, le nombre de circuits distincts est 1/2 * (n - 1)! Pour n + 1 cela devient 1/2 * ((n + 1) - 1)! = 1/2 * n!
+    En faisant le rapport on trouve: 1/2n! / 1/2(n-1)! = n! / (n-1)! = n.
+    Donc quand on ajoute un site, le nombre de circuits à tester est multiplié par n.
+    Mais le facteur pour le temps consacré aux évaluations n'est pas le même. Si le calcul de la longueur d'un seul circuit coûte 
+    un temps proportionnel à n, c * n car il faut additionner n distances. 
+    Alors le nombre de circuits pour n est: 1/2 * (n - 1)! * (c*n) = c/2n! = T(n)
+    Le nombre de circuits pour n - 1 est: 1/2n! * c(n+1) = c/2(n+1)! = T(n + 1)
+    En faisant le rapport on trouve: T(n + 1) / T(n) = n + 1.
+    Donc on en conclut que le temps consacré aux évaluations est multiplié par n + 1.
+
+g) Non deux programmes peuvent renvoyer différentes permutations mais ne pas être en désaccord. Si un programme ne fixe pas 0
+    comme point de départ et un autre si, les deux renvoient la même permutation.
+
+h) L'espace des circuits est fini et l'algo des permutations parcourt toutes les permutations. Les règles de symétrie conservent
+    un représentant de chaque classe d'équivalence de même longueur, la recherche séquentielle du minimum sur cet ensemble fini 
+    atteint nécessairement l'optimum global.
+    Les tests sur des cas simples calculés à la main (triangle, rectangle), le contrôle des compteurs et la comparaison avec
+    une recherche sans filtrage permettent de s'assurer que le code est exempt de bugs.
+
+i) Avant échange: [a, x, y, b]
+    Après échange: [a, y, x, b] Les arrêtes qui disparaîssent sont: (a, x), (x, y) et (y, b).
+    Arêtes qui apparaissent (3) : (a, y), (y, x) et (x, b).
+    
+    Avant [p[n-1], p[0], p[1], p[2]]
+    Après [p[n-1], p[1], p[0], p[2]]
+    Disparaissent : (p[n-1], p[0]), (p[0], p[1]), (p[1], p[2]).
+    Apparaissent : (p[n-1], p[1]), (p[1], p[0]), (p[0], p[2]).
+
+    Oui on peut la déduire, L_nouvelle = L_ancienne - d(a, x) - d(y, b) + d(a, y) + d(x, b)
+
+k) La prise en compte des symétries divise par 2n le nombre de circuits évalués (et par n les permutations générées si l'on fixe 
+    le départ en 0), tandis que la mise à jour locale ramène le calcul de longueur de O(n) à O(1) par transition. 
+    Combinées, ces deux optimisations réduisent le temps d'exécution d'un facteur 20 à 30 dès n = 10.
+
+l) Avec un budget de 60 minutes en Python pur, la taille maximale accessible par exploration exhaustive est n = 14.
+    Cela montre concrètement la limite de l'exploration exacte face à la complexité factorielle O(n!) et justifie 
+    le recours aux heuristiques dès n >= 15.
