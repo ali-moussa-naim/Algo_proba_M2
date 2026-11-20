@@ -35,3 +35,23 @@ f) Je pense que le biais venait de la façon dont je tirais l'indice aléatoire,
     indice aléatoire entre i et (n - 1). Ainsi on ne prendra pas d'éléments déjà triés.
     Donc pour n = 3 les sorties possibles sont: [0, 1, 2], [0, 2, 1], [1, 2, 0], [1, 0, 2], [2, 1, 0], [2, 0, 1] soit 6 possibilités donc cela correspond bien
     à 3! = 6
+
+Exercice 2:
+
+a) Donc pour n = 4 on a la liste initiale [0, 1, 2, 3], l'élément 3 va bouger itérativement de droite à gauche jusqu'à qu'il soit 
+    en première position. Une fois qu'il est au début, il devient inactif : c'est donc le plus grand élément actif suivant (2) qui va 
+    se décaler d'un cran vers la gauche, ce qui va inverser la direction de 3, décalage vers la droite au lieu de la gauche et lui 
+    permettra ensuite de remonter de gauche à droite. 
+    Ainsi les 5 premières transisitons seront les suivantes:
+    [0, 1, 2, 3] : éléments actifs = {1, 2, 3}, élément choisi = 3, direction inversée = aucune
+    [0, 1, 3, 2] : éléments actifs = {1, 3}, élément choisi = 3, direction inversée = aucune
+    [0, 3, 1, 2] : éléments actifs = {2, 3}, élément choisi = 3, direction inversée = aucune
+    [3, 0, 1, 2] : éléments actifs = {1, 2}, élément choisi = 2, direction inversée = 3 on va décaler vers la droite au lieu de la gauche
+    [3, 0, 2, 1] : éléments actifs = {2, 3}, élément choisi = 3, direction inversée = aucune
+    [0, 3, 2, 1] : éléments actifs = {2, 3}, élément choisi = 3, direction inversée = aucune
+    Puis 3 remontera de gauche à droite.
+
+d) A la fin, en faisant plusieurs fois resultats.append(L) on prévoit d'observer plusieurs fois le même résultat. En Python 
+    quand on utilise la fonction append on ajoute une référence vers l'objet mémoire. Donc quand on ajoute L, comme on modifie plusieurs 
+    fois L cettte liste sera écrasée au fur et à mesure à chaque étape et ne gardera que sa valeur finale.
+    Il faut utiliser la fonction .copy() pour régler le problème.
